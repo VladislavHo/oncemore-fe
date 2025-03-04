@@ -1,0 +1,259 @@
+.product {
+  padding: 70px;
+}
+
+.product__page {
+  display: flex;
+  justify-content: space-between;
+}
+
+.product__images {
+  display: flex;
+  gap: 50px;
+}
+
+.product__gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.product__image {
+  border: solid 1px #D0D0D0;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  transition: filter 0.2s ease-in-out;
+}
+
+.product__image:hover {
+  filter: brightness(90%);
+}
+
+.product__image:active {
+  filter: brightness(85%);
+}
+
+.product__current-image {
+  position: relative;
+}
+
+.product__main-image {
+  width: 500px;
+  height: 500px;
+}
+
+.product__image-button {
+  border: none;
+  background: none;
+  background-size: cover;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  bottom: 0;
+  transition: scale 0.2s ease-in-out;
+}
+
+.product__image-button:hover {
+  scale: 1.05;
+}
+
+.product__image-button:active {
+  scale: 1;
+}
+
+.product__image-button:disabled {
+  opacity: 50%;
+  scale: 1;
+  cursor: auto;
+}
+
+.product__image-button_left {
+  background-image: url('../../../images/arrow-circle-left.svg');
+  left: 20px;
+}
+
+.product__image-button_right {
+  background-image: url('../../../images/arrow-circle-right.svg');
+  right: 20px;
+}
+
+
+.product__info {
+  width: 500px;
+}
+
+.product__main {
+  padding: 0 16px 30px;
+  border-bottom: solid 1px #D0D0D0;
+}
+
+.product__title {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 20px;
+}
+
+.product__name {
+  font-weight: 500;
+  font-size: 25px;
+  max-width: 400px;
+}
+
+.product__price {
+  font-weight: 500;
+  font-size: 30px;
+  margin-left: 20px;
+}
+
+.product__old-price {
+  text-decoration: line-through;
+  font-size: 16px;
+  color: #888;
+}
+
+.product__text {
+  margin-top: 16px;
+}
+
+.product__quality {
+  color: #606060;
+}
+
+.product__colors {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.product__color {
+  border: solid 1px #D0D0D0;
+  transition: filter 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.product__color:hover {
+  filter: brightness(85%);
+}
+
+.product__color_selected {
+  border: solid 2px #000;
+}
+
+
+.product__buttons {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.product__cart-button {
+  background-color: #ff91c8;
+  border: none;
+  font-size: 20px;
+  font-weight: 500;
+  color: #2c1822;
+  width: 300px;
+  height: 70px;
+  border-radius: 35px;
+  box-shadow: 2px 3px 5px #27203650;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.product__cart-button:hover {
+  background-color: #ee88bb;
+}
+
+.product__cart-button:active {
+  background-color: #d87aa9;
+}
+
+.product__cart-button:disabled {
+  background-color: #F0F0F0;
+  color: #888;
+  box-shadow: none;
+  cursor: default;
+}
+
+.product__like-button {
+  height: 44px;
+  width: 44px;
+  background: none;
+  border: none;
+  background-image: url('../../../images/like.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.product__like-button_active {
+  background-image: url('../../../images/like\ active.svg');
+}
+
+.product__details {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px;
+  border-bottom: solid 1px #D0D0D0;
+  position: relative;
+}
+
+.product__details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.product__more-button {
+  background: none;
+  border: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 60px;
+  width: 60px;
+  padding: 10px;
+}
+
+.product__more-button_plus {
+  background-image: url('../../../images/Plus.svg');
+}
+
+.product__more-button_minus {
+  background-image: url('../../../images/Minus.svg');
+}
+
+.product__details-text {
+  color: #606060;
+  margin-top: 16px;
+  display: none;
+}
+
+.product__details-text_visible {
+  display: block;
+}
+
+.product__color-image {
+  height: 40px;
+  width: 40px;
+}
+
+
+.product__reviews {
+  margin-top: 100px;
+}
+
+.product__subtitle {
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.product__videos {
+  margin-top: 40px;
+  display: flex;
+  gap: 20px;
+}
+
+
+@import url('./Product_adaptive.css');

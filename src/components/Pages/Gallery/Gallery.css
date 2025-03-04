@@ -1,0 +1,24 @@
+.gallery {
+  padding: 50px 70px 70px;
+}
+
+.gallery__header {
+  display: flex;
+  gap: 5px;
+  color: #888888;
+}
+
+.gallery__link {
+  color: #888888;
+}
+
+.gallery__current {
+  color: #555555;
+}
+
+.gallery__items {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

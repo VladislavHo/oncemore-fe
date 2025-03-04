@@ -1,0 +1,131 @@
+.cart {
+  padding: 70px 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart__header {
+  display: flex;
+  width: 100%;
+  padding: 0 0 20px;
+  border-bottom: solid 1px #c28ea7;
+}
+
+.cart__back {
+  background: none;
+  border: none;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart__title {
+  font-weight: 500;
+  font-size: 24px;
+  margin: 0 auto;
+}
+
+.cart__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cart__items {
+  margin-top: 50px;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: solid 1px #c28ea7;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cart__items-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.cart__clear {
+  background: none;
+  border: none;
+  font-size: 15px;
+  text-decoration: underline;
+}
+
+
+.cart__summary {
+  margin-top: 50px;
+  width: 30%;
+  border: solid 1px #c28ea7;
+  border-radius: 10px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.cart__cost {
+  display: flex;
+  justify-content: space-between;
+  color: #888888;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.cart__cost_discount {
+  color: #3ba725;
+}
+
+.cart__price {
+  color: #000;
+  font-weight: 500;
+}
+
+.cart__price_discount {
+  color: #3ba725;
+}
+
+.cart__total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+.cart__checkout-button {
+  margin-top: 20px;
+  background-color: #ff91c8;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  color: #2c1822;
+  width: 100%;
+  height: 40px;
+  border-radius: 35px;
+  box-shadow: 2px 3px 5px #27203650;
+  transition: background-color 0.2s ease-in-out;
+}
+
+
+@media screen and (max-width: 600px) {
+  .cart {
+    padding: 50px 20px;
+  }
+
+  .cart__main {
+    flex-direction: column;
+  }
+
+  .cart__items {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .cart__summary {
+    width: 100%;
+  }
+}

@@ -1,0 +1,24 @@
+.alice-carousel {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.alice-carousel__stage {
+  display: flex;
+  gap: 18px;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  position: relative;
+  width: calc(100vw - 140px);
+}
+
+.alice-carousel__dots {
+  display: none
+}
+
+.alice-carousel__stage-item {
+  margin: 0;
+  max-width: 250px;
+}

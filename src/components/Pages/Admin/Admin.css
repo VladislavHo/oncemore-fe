@@ -1,0 +1,25 @@
+.admin {
+  padding: 70px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin__buttons {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin__button {
+  border: none;
+  padding: 10px 16px;
+}
+
+.admin__orders {
+  margin-top: 50px;
+}
+
+.admin__order-cards {
+  margin-top: 30px;
+}

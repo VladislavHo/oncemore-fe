@@ -1,0 +1,144 @@
+import { useEffect, useRef, useState } from "react";
+import FormModal from "../FormModal/FormModal";
+import { FormValidator } from "../../../utils/FormValidator";
+import { useSearchParams } from "react-router-dom";
+
+
+function parseVideoLink(videoLink) {
+  const regex = /clip-(\d+)_(\d+)/;
+  let match = videoLink.match(regex);
+
+  if (match) {
+    const [_, oid, id] = match;
+
+    return {
+      src: `https://vk.com/clip-${oid}_${id}`,
+      oid: parseInt(oid),
+      id: parseInt(id)
+    };
+  } else {
+    throw new Error("Invalid video link");
+  }
+}
+
+function VideoModal(props) {
+  const [orders, setOrders] = useState([]);
+  const [video, setVideo] = useState("");
+
+  const [reviewText, setReviewText] = useState("");
+
+
+  const [isButtonActive, setButtonActivity] = useState(false);
+  const [validator, setValidator] = useState(null);
+  const formRef = useRef();
+  const [product, setProduct] = useState(null)
+
+  function enableValidation() {
+    const formElement = formRef.current;
+    const newValidator = new FormValidator(formElement, setButtonActivity);
+    newValidator.enableValidation();
+    setValidator(newValidator);
+  }
+
+  function toggleButtonState() {
+    validator.toggleButtonState();
+  }
+
+  function submit() {
+    const { src, oid, id } = parseVideoLink(video);
+
+    const videoObj = {
+      src, oid, id
+    }
+
+    return props.loadVideo(videoObj, product, reviewText)
+      .then(props.onClose);
+
+  }
+
+  useEffect(() => {
+
+    props.loadOrders()
+      .then((res) => setOrders(res));
+  }, []);
+
+  useEffect(() => {
+    enableValidation();
+  }, [formRef]);
+
+  console.log(product, 'PRODUCT!!!');
+
+
+  return (
+    <FormModal
+      name={props.name}
+      onClose={props.onClose}
+      isOpen={props.isOpen}
+      title="Новый обзор"
+      buttonText="Загрузить"
+      formRef={formRef}
+      isButtonActive={isButtonActive}
+      onSubmit={submit}
+    >
+      <label className="modal__label">
+        <p className="modal__label-text">Ссылка на видео*</p>
+        <input
+          className="modal__input"
+          type="url"
+          id="video-link"
+          placeholder="https://vk.com/clip-*******_*******"
+          onChange={(e) => {
+            setVideo(e.target.value);
+            toggleButtonState();
+          }}
+          value={video}
+          required
+        />
+      </label>
+
+      <label className="modal__label">
+        <p className="modal__label-text">Выбрать продукт*</p>
+
+        <select
+          className="select__orders"
+          onChange={(e) => setProduct(e.target.value)}
+          defaultValue=""
+        >
+          <option value="" disabled>Выбрать</option>
+          {orders && orders.map((o, index) => {
+            console.log(o, 'ORDER')
+            try {
+              const orderParse = JSON.parse(o.items)[0];
+              return (
+                <option key={orderParse._id} value={orderParse._id}>
+                  {orderParse.name}
+                </option>
+              );
+            } catch (error) {
+              console.error("Error parsing items:", error); // Логирование ошибок
+              return null; // Возвращаем null в случае ошибки
+            }
+          })}
+        </select>
+
+      </label>
+
+      <label className="modal__label">
+        <p className="modal__label-text">Текст отзыва</p>
+        <textarea
+          className="modal__textarea"
+          id="video-review"
+          placeholder="Ваш отзыв на продукт"
+          onChange={(e) => {
+            setReviewText(e.target.value);
+            toggleButtonState();
+          }}
+          value={reviewText}
+          required
+        />
+      </label>
+    </FormModal>
+  );
+}
+
+export default VideoModal;

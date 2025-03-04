@@ -1,0 +1,110 @@
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  max-height: 320px;
+  border: 1px solid rgb(230, 232, 241);
+  transition: box-shadow 0.2s;
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.item:hover {
+  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.1);
+}
+
+.item_small {
+  width: 150px;
+  height: 240px;
+  flex-shrink: 0;
+}
+
+.item__image-container {
+  height: 200px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.item_small .item__image-container {
+  width: 130px;
+  height: 130px;
+}
+
+.item__image {
+  width: 100%;
+}
+
+.item__info {
+  z-index: -1;
+  background-color: rgb(251, 251, 254);
+  padding: 10px 20px 20px;
+  box-sizing: border-box;
+  border-top: 1px solid rgb(230, 232, 241);
+}
+
+.item__name {
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 14px;
+  color: #000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.item__price {
+  font-weight: 500;
+  font-size: 20px;
+  margin-top: 8px;
+  color: #000;
+}
+
+.item__old-price {
+  color: #888;
+  font-size: 14px;
+  text-decoration: line-through;
+}
+
+.item__cart-button {
+  margin-top: 16px;
+  background-color: #fff;
+  background-image: url("../../images/Plus.svg");
+  background-size: cover;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  position: absolute;
+  top: 0;
+  right: 16px;
+  box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.15);
+  z-index: 1;
+}
+
+.item__like-button {
+  height: 32px;
+  width: 32px;
+  background: none;
+  border: none;
+  background-image: url('../../images/like.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
+.item__like-button_active {
+  background-image: url('../../images/like\ active.svg');
+}

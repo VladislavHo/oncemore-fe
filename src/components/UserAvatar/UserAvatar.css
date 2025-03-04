@@ -1,0 +1,36 @@
+.avatar {
+  position: relative;
+}
+
+.avatar__container {
+  background-color: #ff91c8;
+  color: #FFF;
+  font-weight: 400;
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  text-transform: uppercase;
+}
+
+.avatar__image {
+  max-width: 150%;
+  max-height: 150%;
+}
+
+.avatar__user-button {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  height: 24px;
+  width: 24px;
+  background-color: #FFF;
+  border: none;
+  border-radius: 12px;
+  background-image: url('../../images/Plus.svg');
+  background-size: cover;
+}

@@ -1,0 +1,53 @@
+.multiselect {
+  position: relative;
+}
+
+.multiselect__button {
+  background: none;
+  border: solid 1px gray;
+  border-radius: 4px;
+  width: 120px;
+  height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  color: rgb(0, 0, 0, 0.7);
+}
+
+.multiselect__button_open {
+  border-radius: 4px 4px 0 0;
+}
+
+.multiselect__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.multiselect__options {
+  display: none;
+  border: solid 1px gray;
+  border-radius: 0 0 4px 4px;
+  width: 120px;
+  box-sizing: border-box;
+  background-color: #FFF;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 4px;
+  width: 100%;
+  border-radius: 0 0 4px 4px;
+  position: relative;
+  top: -1px;
+  z-index: 1;
+}
+
+.multiselect__options_visible {
+  display: flex;
+}
+
+.multiselect__label {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

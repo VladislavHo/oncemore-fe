@@ -1,0 +1,97 @@
+.video {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 265px;
+  height: 540px;
+  border: 1px solid rgb(230, 232, 241);
+  transition: box-shadow 0.2s;
+  overflow: hidden;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+
+.video_small {
+  width: 150px;
+  height: 240px;
+}
+
+.video:hover {
+  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.15);
+}
+
+.video__container {
+  /* width: 100%; */
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.video__vid {
+  border: none;
+  height: 100%;
+}
+
+.video__views {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: #FFF;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.video__button {
+  background-color: #FFF;
+  background-image: url("../../images/Plus.svg");
+  background-size: cover;
+  border: none;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+
+.video__info {
+  background-color: #F8F8F8;
+  height: 25%;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.video_small .video__info {
+  padding: 10px;
+}
+
+.video__title {
+  font-weight: 500;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.video__price {
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: auto;
+}
+
+
+.VideoPlayerEmbed a{
+  display: none;
+}

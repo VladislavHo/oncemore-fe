@@ -1,0 +1,35 @@
+.comment {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.comment__container {
+  background-color: #F0F0F0;
+  padding: 16px;
+  border-radius: 16px;
+  width: 100%;
+  position: relative;
+}
+
+.comment__text {
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 16px;
+}
+
+.comment__admin {
+  margin-top: 16px;
+}
+
+.comment__like {
+  height: 24px;
+  width: 24px;
+  background: none;
+  border: none;
+  background-image: url("../../images/like.svg");
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}

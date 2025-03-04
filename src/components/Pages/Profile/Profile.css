@@ -1,0 +1,65 @@
+.profile {
+  padding: 100px;
+}
+
+.profile__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile__user {
+  display: flex;
+  align-items: center;
+}
+
+.profile__name {
+  font-weight: 500;
+  font-size: 22px;
+  margin-left: 16px;
+}
+
+.profile__edit-button {
+  height: 24px;
+  width: 24px;
+  background: none;
+  border: none;
+  margin-left: 10px;
+  background-image: url('../../../images/edit-alt.svg');
+}
+
+.profile__videos {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.profile__review-button {
+  margin-top: 16px;
+  background-color: #ff91c8;
+  border: none;
+  font-size: 20px;
+  font-weight: 500;
+  color: #2c1822;
+  width: 200px;
+  height: 40px;
+  border-radius: 35px;
+  box-shadow: 2px 3px 5px #27203650;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.profile__review-button:hover {
+  background-color: #ee88bb;
+}
+
+.profile__review-button:active {
+  background-color: #d87aa9;
+}
+
+
+@media screen and (max-width: 600px) {
+  .profile {
+    padding: 50px 20px;
+  }
+}

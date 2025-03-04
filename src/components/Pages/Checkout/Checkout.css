@@ -1,0 +1,19 @@
+.checkout {
+  padding: 70px;
+}
+
+.checkout__form {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checkout__label-text {
+  font-size: 14px;
+}
+
+.checkout__button {
+  margin-top: 40px;
+}

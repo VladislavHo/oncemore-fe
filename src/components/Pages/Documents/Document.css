@@ -1,0 +1,21 @@
+.document {
+  padding: 70px;
+}
+
+.document__title {
+  margin: 20px 0;
+  font-weight: 500;
+}
+
+.document__text {
+  margin-top: 10px;
+  font-weight: 300;
+}
+
+.document__list-item {
+  margin-top: 8px;
+}
+
+.document__accent {
+  font-weight: 400;
+}
