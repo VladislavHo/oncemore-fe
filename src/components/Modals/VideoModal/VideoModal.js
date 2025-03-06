@@ -74,7 +74,7 @@ function VideoModal(props) {
       name={props.name}
       onClose={props.onClose}
       isOpen={props.isOpen}
-      title="Новый обзор"
+      title="%Новый обзор%"
       buttonText="Загрузить"
       formRef={formRef}
       isButtonActive={isButtonActive}
