@@ -105,18 +105,20 @@ function VideoModal(props) {
           defaultValue=""
         >
           <option value="" disabled>Выбрать</option>
-          {orders && orders.map((o, index) => {
-            console.log(o, 'ORDER')
+          {orders && Array.isArray(orders) && orders.map((o, index) => {
             try {
-              const orderParse = JSON.parse(o.items)[0];
+              const items = o.items ? JSON.parse(o.items) : [];
+              const orderParse = items[0]; 
+              if (!orderParse) return null;
+
               return (
                 <option key={orderParse._id} value={orderParse._id}>
                   {orderParse.name}
                 </option>
               );
             } catch (error) {
-              console.error("Error parsing items:", error); // Логирование ошибок
-              return null; // Возвращаем null в случае ошибки
+              console.error("Error parsing items:", error);
+              return null;
             }
           })}
         </select>
