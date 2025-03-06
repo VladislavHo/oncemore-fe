@@ -34,19 +34,20 @@ function VideoModal(props) {
   const [product, setProduct] = useState(null)
 
   useEffect(() => {
+    // Load orders when the component mounts or props change
+    if (props) {
+      const getDataOrders = async () => {
+        try {
+          const res = await props.loadOrders();
+          setOrders(res);
+        } catch (error) {
+          console.error("Error loading orders:", error);
+        }
+      };
 
-    async function getDataOrders() {
-      try {
-        await props.loadOrders()
-          .then((res) => setOrders(res));
-
-      } catch (error) {
-
-      }
+      getDataOrders();
     }
-
-    getDataOrders()
-  }, []);
+  }, [props]);
 
   function enableValidation() {
     const formElement = formRef.current;
