@@ -33,6 +33,12 @@ function VideoModal(props) {
   const formRef = useRef();
   const [product, setProduct] = useState(null)
 
+  useEffect(() => {
+
+    props.loadOrders()
+      .then((res) => setOrders(res));
+  }, []);
+
   function enableValidation() {
     const formElement = formRef.current;
     const newValidator = new FormValidator(formElement, setButtonActivity);
@@ -56,11 +62,7 @@ function VideoModal(props) {
 
   }
 
-  useEffect(() => {
 
-    props.loadOrders()
-      .then((res) => setOrders(res));
-  }, [orders]);
 
   useEffect(() => {
     enableValidation();
@@ -108,7 +110,7 @@ function VideoModal(props) {
           {orders && Array.isArray(orders) && orders.map((o, index) => {
             try {
               const items = o.items ? JSON.parse(o.items) : [];
-              const orderParse = items[0]; 
+              const orderParse = items[0];
               if (!orderParse) return null;
 
               return (
