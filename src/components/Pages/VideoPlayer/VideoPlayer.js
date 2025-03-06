@@ -3,7 +3,7 @@ import "./VideoPlayer.css";
 import "./VideoPlayer_adaptive.css";
 import UserAvatar from "../../UserAvatar/UserAvatar";
 import { useContext, useEffect, useState } from "react";
-import {parseViews} from "../../../utils/parsers";
+import { parseViews } from "../../../utils/parsers";
 import playIcon from "../../../images/play.svg";
 import Video from "../../Video/Video";
 import ProductCard from "../../ProductCard/ProductCard";
@@ -14,8 +14,7 @@ import Comments from "../../Comments/Comments";
 export default function VideoPlayer(props) {
   //#region Methods
 
-  function sendComment(commentText)
-  {
+  function sendComment(commentText) {
     props.sendComment(commentText, data._id)
       .then(() => props.getComments(data._id))
       .then((commentData) => setComments(commentData));
@@ -45,12 +44,12 @@ export default function VideoPlayer(props) {
   const [commentsOpen, setCommentsOpen] = useState(null);
 
   useEffect(() => {
-      if (!props.videos || props.videos.length == 0) return;
+    if (!props.videos || props.videos.length == 0) return;
 
-      setData(props.videos
-        .find((video) => video._id == id));
-    },
-  [props.videos]);
+    setData(props.videos
+      .find((video) => video._id == id));
+  },
+    [props.videos]);
 
   useEffect(() => {
     if (!data.product) return;
@@ -63,7 +62,7 @@ export default function VideoPlayer(props) {
   }, [data]);
 
   useEffect(() => {
-    if (!data._id) return; 
+    if (!data._id) return;
 
     setParsedViews(parseViews(data.views + 1));
     props.addView(data._id, data.views, data.author);
@@ -82,9 +81,11 @@ export default function VideoPlayer(props) {
   return (
     <main className="player">
       <div className="player__main">
-        <iframe className="player__video"
+        {/* <iframe className="player__video"
           src={data.video}
-        />
+        /> */}
+        <iframe src={`https://vk.com/video_ext.php?oid=-${data.video.oid}&id=${data.video.id}&hd=2&autoplay=0`} width="565" height="900" allow="fullscreen;" frameborder="0" allowfullscreen></iframe>
+
         <div className="player__product">
           <div className="player__image-container">
             <img className="player__product-image"
@@ -95,7 +96,7 @@ export default function VideoPlayer(props) {
             <h4 className="player__price">{productData.price}₽</h4>
             <h3 className="player__title">{productData.name}</h3>
           </div>
-          <button className="player__cart-button" 
+          <button className="player__cart-button"
             type="button"
           />
         </div>
@@ -126,77 +127,77 @@ export default function VideoPlayer(props) {
               onClick={nextVideo}
             />
           </div> */}
-          <button 
+          <button
             className="player__video-button player__video-button_comment"
             onClick={() => setCommentsOpen(!commentsOpen)}
           />
-          <button 
+          <button
             className="player__video-button player__video-button_share"
             onClick={props.openShareModal}
           />
         </div>
-        <button 
+        <button
           className="player__video-button player__video-button_close"
           onClick={() => navigate(-1)}
         />
         {
-          commentsOpen ? 
-          <Comments
-            comments={comments}
-            getUser={props.getUser}
-            setCommentsOpen={setCommentsOpen}
-            deleteComment={props.deleteComment}
-            sendComment={sendComment}
-            likeComment={props.likeComment}
-          />
-          : ""
+          commentsOpen ?
+            <Comments
+              comments={comments}
+              getUser={props.getUser}
+              setCommentsOpen={setCommentsOpen}
+              deleteComment={props.deleteComment}
+              sendComment={sendComment}
+              likeComment={props.likeComment}
+            />
+            : ""
         }
       </div>
       <div className="player__products">
         {
           isAdmin ?
-          <div className="player__admin">
-            <button className="player__admin-button"
-              onClick={() => props.deleteReview(data)}
-            >
-              Удалить видео
-            </button>
-            <button className="player__admin-button"
-              onClick={() => props.blockUser(userData)}
-            >
-              Заблокировать пользователя
-            </button>
-          </div>
-          : ""
+            <div className="player__admin">
+              <button className="player__admin-button"
+                onClick={() => props.deleteReview(data)}
+              >
+                Удалить видео
+              </button>
+              <button className="player__admin-button"
+                onClick={() => props.blockUser(userData)}
+              >
+                Заблокировать пользователя
+              </button>
+            </div>
+            : ""
         }
         <h2 className="player__review-title">
           Обзор продукта {productData.name} от пользователя {userData.name}
         </h2>
-          <div className="player__category">
-            <div className="player__category-header">
-              <h3 className="player__subtitle">
-                Другие обзоры
-              </h3>
-              <NavLink className="catalogue__more"
-                to={`/items/gallery?filtering=item&filter=${data.product}&type=videos`}
-              >
-                Посмотреть всё
-              </NavLink>
-            </div>
+        <div className="player__category">
+          <div className="player__category-header">
             <h3 className="player__subtitle">
-              <div className="player__gallery">
-                {
-                  videos.map((video, i) => 
-                    <Video
-                      isSmall={true}
-                      data={video}
-                      key={`video-${i}`}
-                      getProduct={props.getProduct}
-                    />
-                  )
-                }
-              </div>
+              Другие обзоры
             </h3>
+            <NavLink className="catalogue__more"
+              to={`/items/gallery?filtering=item&filter=${data.product}&type=videos`}
+            >
+              Посмотреть всё
+            </NavLink>
+          </div>
+          <h3 className="player__subtitle">
+            <div className="player__gallery">
+              {
+                videos.map((video, i) =>
+                  <Video
+                    isSmall={true}
+                    data={video}
+                    key={`video-${i}`}
+                    getProduct={props.getProduct}
+                  />
+                )
+              }
+            </div>
+          </h3>
         </div>
         <div className="player__category">
           <div className="player__category-header">
@@ -209,29 +210,29 @@ export default function VideoPlayer(props) {
               Посмотреть всё
             </NavLink>
           </div>
-            <div className="player__gallery">
-              {
-                props.items.map((data, i) => 
-                  <ProductCard
-                    isSmall={true}
-                    data={data}
-                    key={`product-${i}`}
-                  />
-                )
-              }
-            </div>
+          <div className="player__gallery">
+            {
+              props.items.map((data, i) =>
+                <ProductCard
+                  isSmall={true}
+                  data={data}
+                  key={`product-${i}`}
+                />
+              )
+            }
+          </div>
         </div>
         {
           !data.text ? "" :
-          <div className="player__review">
-            <h3 className="player__subtitle">
-              Что {userData.name} говорит о {productData.name}
-            </h3>
-            <Review 
-              author={userData}
-              videoData={data}
-            />
-          </div>
+            <div className="player__review">
+              <h3 className="player__subtitle">
+                Что {userData.name} говорит о {productData.name}
+              </h3>
+              <Review
+                author={userData}
+                videoData={data}
+              />
+            </div>
         }
         <div className="player__category">
           <div className="player__category-header">
@@ -244,18 +245,18 @@ export default function VideoPlayer(props) {
               Посмотреть всё
             </NavLink>
           </div>
-            <div className="player__gallery">
-              {
-                profile.map((video, i) => 
-                  <Video
-                    isSmall={true}
-                    data={video}
-                    key={`video-${i}`}
-                    getProduct={props.getProduct}
-                  />
-                )
-              }
-            </div>
+          <div className="player__gallery">
+            {
+              profile.map((video, i) =>
+                <Video
+                  isSmall={true}
+                  data={video}
+                  key={`video-${i}`}
+                  getProduct={props.getProduct}
+                />
+              )
+            }
+          </div>
         </div>
       </div>
     </main>
