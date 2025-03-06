@@ -35,8 +35,17 @@ function VideoModal(props) {
 
   useEffect(() => {
 
-    props.loadOrders()
-      .then((res) => setOrders(res));
+    async function getDataOrders() {
+      try {
+        await props.loadOrders()
+          .then((res) => setOrders(res));
+
+      } catch (error) {
+
+      }
+    }
+
+    getDataOrders()
   }, []);
 
   function enableValidation() {
