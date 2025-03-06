@@ -60,7 +60,7 @@ function VideoModal(props) {
 
     props.loadOrders()
       .then((res) => setOrders(res));
-  }, []);
+  }, [orders]);
 
   useEffect(() => {
     enableValidation();
