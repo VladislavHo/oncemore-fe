@@ -81,42 +81,32 @@ export default function VideoPlayer(props) {
   return (
     <main className="player">
       <div className="player__main">
+        <div className="player__main-container">
+
+          <iframe src={`https://vk.com/video_ext.php?oid=-${data.video.oid}&id=${data.video.id}&hd=2&autoplay=0`} width="565" height="900" allow="fullscreen;" frameborder="0" allowfullscreen></iframe>
+        </div>
         {/* <iframe className="player__video"
           src={data.video}
         /> */}
-        <iframe src={`https://vk.com/video_ext.php?oid=-${data.video.oid}&id=${data.video.id}&hd=2&autoplay=0`} width="565" height="900" allow="fullscreen;" frameborder="0" allowfullscreen></iframe>
 
-        <div className="player__product">
-          <div className="player__image-container">
-            <img className="player__product-image"
-              src={productData.photos[0]}
-            />
-          </div>
-          <div className="player__product-info">
-            <h4 className="player__price">{productData.price}₽</h4>
-            <h3 className="player__title">{productData.name}</h3>
-          </div>
-          <button className="player__cart-button"
-            type="button"
-          />
-        </div>
+
         <div className="player__video-info">
           <div className="player__user">
-            <UserAvatar
-              userData={userData}
-            >
+            {/* <UserAvatar
+              userData={userData} */}
+            
               {/* <button className="avatar__user-button"/> */}
-            </UserAvatar>
-            <div className="player__author">
+            {/* </UserAvatar> */}
+            {/* <div className="player__author">
               {userData.handle}
-            </div>
+            </div> */}
           </div>
-          <div className="player__views">
+          {/* <div className="player__views">
             <img className="player__views-icon"
               src={playIcon}
             />
             {parsedViews ? parsedViews : 0}
-          </div>
+          </div> */}
           {/* <div className="player__arrows">
             <button 
               className="player__video-button player__video-button_up"
@@ -127,14 +117,14 @@ export default function VideoPlayer(props) {
               onClick={nextVideo}
             />
           </div> */}
-          <button
+          {/* <button
             className="player__video-button player__video-button_comment"
             onClick={() => setCommentsOpen(!commentsOpen)}
-          />
-          <button
+          /> */}
+          {/* <button
             className="player__video-button player__video-button_share"
             onClick={props.openShareModal}
-          />
+          /> */}
         </div>
         <button
           className="player__video-button player__video-button_close"
@@ -173,6 +163,20 @@ export default function VideoPlayer(props) {
         <h2 className="player__review-title">
           Обзор продукта {productData.name} от пользователя {userData.name}
         </h2>
+        <div className="player__product">
+          <div className="player__image-container">
+            <img className="player__product-image"
+              src={productData.photos[0]}
+            />
+          </div>
+          <div className="player__product-info">
+            <h4 className="player__price">{productData.price}₽</h4>
+            <h3 className="player__title">{productData.name}</h3>
+          </div>
+          <button className="player__cart-button"
+            type="button"
+          />
+        </div>
         <div className="player__category">
           <div className="player__category-header">
             <h3 className="player__subtitle">

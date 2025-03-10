@@ -15,6 +15,9 @@ export default function Video(props) {
 
   if (!productData) return;
 
+  console.log(isHovered, "isHovered", video);
+
+
   return (
     <NavLink className={`video ${props.isSmall ? "video_small" : ""}`}
       to={`/review?id=${_id}`}
@@ -24,8 +27,15 @@ export default function Video(props) {
       <div className="video__container"
 
       >
-        <iframe src={`https://vk.com/video_ext.php?oid=-${video.oid}&id=${video.id}&hd=2&autoplay=0`} width="265" height="540" allow="fullscreen;" frameborder="0" allowfullscreen></iframe>
-        {/* <div className="video__views">
+        <iframe
+          key={`${video.oid}-${video.id}`}
+          src={`https://vk.com/video_ext.php?oid=-${video.oid}&id=${video.id}&hd=2&autoplay=0`}
+          width="265"
+          height="540"
+          style={{ border: 'none' }}
+          allow="fullscreen"
+          allowFullScreen
+        />        {/* <div className="video__views">
           <img className="video__view-icon"
             src={play}
           />

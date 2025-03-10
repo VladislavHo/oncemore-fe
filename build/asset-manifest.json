@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.804f5f84.css",
-    "main.js": "/static/js/main.5c1105b5.js",
+    "main.css": "/static/css/main.43779e6f.css",
+    "main.js": "/static/js/main.4e7b29f0.js",
     "static/css/801.16ee9341.chunk.css": "/static/css/801.16ee9341.chunk.css",
     "static/js/801.ef369525.chunk.js": "/static/js/801.ef369525.chunk.js",
     "static/media/video.mp4": "/static/media/video.59f191647b1150ef2586.mp4",
@@ -10,7 +10,7 @@
     "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
     "static/media/Roboto-Bold.ttf": "/static/media/Roboto-Bold.f80816a5455d171f948d.ttf",
     "static/media/Roboto-Light.ttf": "/static/media/Roboto-Light.333da16a3f3cc391d087.ttf",
-    "static/media/onsemore_2.png": "/static/media/onsemore_2.e6bb255c342b7bdca4d8.png",
+    "static/media/oncemore_logo.svg": "/static/media/oncemore_logo.f259b5a1994d67a384e6361d241762fd.svg",
     "static/media/WhatsApp.svg": "/static/media/WhatsApp.4301639da83d439ee06b3a755320d4b2.svg",
     "static/media/Telegram.svg": "/static/media/Telegram.79a850eba880699f122e4b86d0ee2b29.svg",
     "static/media/grid-2.svg": "/static/media/grid-2.7acbc4d42fe7ef868cf830b75bfd5812.svg",
@@ -39,13 +39,13 @@
     "static/media/menu black.svg": "/static/media/menu black.f69aaff115ee8eb4b42a.svg",
     "static/media/Plus.svg": "/static/media/Plus.78db75b6305df97c4182.svg",
     "static/media/Minus.svg": "/static/media/Minus.f6cd22ad776bd0aaed53.svg",
-    "main.804f5f84.css.map": "/static/css/main.804f5f84.css.map",
-    "main.5c1105b5.js.map": "/static/js/main.5c1105b5.js.map",
+    "main.43779e6f.css.map": "/static/css/main.43779e6f.css.map",
+    "main.4e7b29f0.js.map": "/static/js/main.4e7b29f0.js.map",
     "801.16ee9341.chunk.css.map": "/static/css/801.16ee9341.chunk.css.map",
     "801.ef369525.chunk.js.map": "/static/js/801.ef369525.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.804f5f84.css",
-    "static/js/main.5c1105b5.js"
+    "static/css/main.43779e6f.css",
+    "static/js/main.4e7b29f0.js"
   ]
 }

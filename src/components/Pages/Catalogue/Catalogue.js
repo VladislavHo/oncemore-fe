@@ -10,8 +10,44 @@ import { NavLink, useSearchParams } from "react-router-dom";
 
 
 export default function Catalogue(props) {
+  const colors = getUniqueItems(props.items.map((data) => data.color));
+  const maxItemPrice = Math.max(...(props.items.map((data) => data.price)));
+
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("filter");
+
+  const [isNew, setIsNew] = useState(false);
+  const [discount, setDiscount] = useState(false);
+  const [selectedColors, setColors] = useState([]);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(maxItemPrice);
+
+  const itemCarousel = useRef();
+  const videoCarousel = useRef();
+  const videosProps = props.videos
+  const [filteredItems, setFilteredItems] = useState(props.items);
+
+  const items = filteredItems.map((data, i) =>
+    <ProductCard
+      data={data}
+      key={`product-${i}`}
+      addItem={props.addItem}
+      likeItem={props.likeItem}
+      openLoginModal={props.openLoginModal}
+      isLoggedIn={props.isLoggedIn}
+    />
+  );
+
+  const videos = videosProps.map((video, i) =>
+    <Video
+      data={video}
+      key={`video-${i}`}
+      getProduct={props.getProduct}
+    />
+  );
+
   //#region Methods
-const videosProps = props.videos
+
   function selectColors(changedColor) {
     if (selectedColors.includes(changedColor)) {
       setColors(selectedColors.filter((el) => el !== changedColor));
@@ -51,46 +87,12 @@ const videosProps = props.videos
 
   //#region  Variables
 
-  const colors = getUniqueItems(props.items.map((data) => data.color));
-  const maxItemPrice = Math.max(...(props.items.map((data) => data.price)));
 
-  const searchParams = useSearchParams();
-  const category = searchParams[0].get("filter");
-
-  const [isNew, setIsNew] = useState(false);
-  const [discount, setDiscount] = useState(false);
-  const [selectedColors, setColors] = useState([]);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(maxItemPrice);
-
-  const [filteredItems, setFilteredItems] = useState(props.items);
   useEffect(filterItems,
     [selectedColors, maxPrice, minPrice, isNew, discount, category]
   );
 
-  const items = filteredItems.map((data, i) =>
-    <ProductCard
-      data={data}
-      key={`product-${i}`}
-      addItem={props.addItem}
-      likeItem={props.likeItem}
-      openLoginModal={props.openLoginModal}
-      isLoggedIn={props.isLoggedIn}
-    />
-  );
 
-
-
-  const videos = videosProps.map((video, i) =>
-    <Video
-      data={video}
-      key={`video-${i}`}
-      getProduct={props.getProduct}
-    />
-  );
-
-  const itemCarousel = useRef();
-  const videoCarousel = useRef();
 
   //#endregion
 
@@ -151,6 +153,48 @@ const videosProps = props.videos
             Посмотреть всё
           </NavLink>
         </div>
+        
+        <div className="catalogue__gallery catalogue__gallery_scroll">
+          <AliceCarousel
+            items={items}
+            paddingLeft={0}
+            paddingRight={0}
+            mouseTrackingresponsive={{
+              0: {
+                items: 2
+              },
+              600: {
+                items: 3
+              },
+              900: {
+                items: 4
+              },
+              1200: {
+                items: 5
+              }
+            }}
+            disableButtonsControls={true}
+            ref={itemCarousel}
+          />
+          <button
+            className="catalogue__carousel-btn catalogue__carousel-btn_prev"
+            type="button"
+            onClick={() => slidePrev(itemCarousel)}
+          />
+          <button
+            className="catalogue__carousel-btn catalogue__carousel-btn_next"
+            type="button"
+            onClick={() => slideNext(itemCarousel)}
+          />
+        </div>
+        <div className="catalogue__category">
+        <h3 className="catalogue__subtitle">{`#${category.toLowerCase()}`}</h3>
+          <NavLink className="catalogue__more"
+            to={`/items/gallery?filtering=category&filter=${category}&type=items`}
+          >
+            Посмотреть всё
+          </NavLink>
+        </div>
         <div className="catalogue__gallery catalogue__gallery_scroll">
           <AliceCarousel
             items={items}
@@ -185,10 +229,11 @@ const videosProps = props.videos
           />
         </div>
       </section>
+
       {videos.length > 0 ?
         <section className="catalogue__reviews">
           <div className="catalogue__category">
-            <h3 className="catalogue__subtitle">#тренды</h3>
+            <h3 className="catalogue__subtitle">#видео отзывы</h3>
             <NavLink className="catalogue__more"
               to={`/items/gallery?filtering=category&filter=${category}&type=videos`}
             >
