@@ -52,7 +52,7 @@ export default function Main() {
         </div>
       </div> */}
 
-      <h1 style={{fontSize: "40px", textTransform: 'uppercase', color: 'white'}}>ведуться технические работы</h1>
+      <h1 style={{fontSize: "40px", textTransform: 'uppercase', color: 'white'}}>ведутся технические работы</h1>
     </div>
   );
 }
