@@ -3,7 +3,7 @@
   flex-direction: column;
   margin-top: auto;
   border-top: solid 1px #c28ea7;
-  padding: 50px 70px 100px;
+  padding: 20px 70px 100px;
 }
 
 .footer__logo {
@@ -22,13 +22,13 @@
 }
 
 .footer__title {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .footer__text {
-  font-size: 16px;
+  font-size: 14px;
   max-width: 350px;
 }
 
@@ -53,6 +53,7 @@
 
 .footer__link {
   color: #000;
+  font-size: 12px;
 }
 
 

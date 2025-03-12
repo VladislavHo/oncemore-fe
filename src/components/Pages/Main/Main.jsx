@@ -2,10 +2,10 @@ import React from "react";
 import "./Main.css";
 export default function Main() {
   return (
-    <div className="main">
-      <div className="main--video">
+    <div className="main" style={{background: 'rgba(255, 0, 0, 0.303)', display: 'flex', justifyContent: 'cnter', alignItems: 'center'}}>
+      {/* <div className="main--video">
         <div className="video--container">
-        <iframe src="https://vk.com/video_ext.php?oid=-227359578&id=456239019&hd=2&autoplay=1" width="325" height="646" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
+        <iframe src="https://vk.com/video_ext.php?oid=-227359578&id=456239019&hd=2&autoplay=1" width="265" height="540" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
       <div className="main--info">
@@ -50,7 +50,9 @@ export default function Main() {
         <div className="main-link--container">
           <a href="#" target="_blank"><span>К выбору</span></a>
         </div>
-      </div>
+      </div> */}
+
+      <h1 style={{fontSize: "40px", textTransform: 'uppercase', color: 'white'}}>ведуться технические работы</h1>
     </div>
   );
 }

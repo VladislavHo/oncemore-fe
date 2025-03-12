@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px 70px 20px;
+  padding: 10px 70px 10px;
   border-bottom: solid 1px #c28ea7;
   width: 100%;
   box-sizing: border-box;
@@ -109,14 +109,14 @@
 
 .header__categories {
   display: flex;
-  padding: 24px 0;
+  padding: 10px 0;
   gap: 32px;
   justify-content: center;
 }
 
 .header__category {
   font-weight: 300;
-  font-size: 20px;
+  font-size: 16px;
   text-decoration: none;
   color: #000;
 }
