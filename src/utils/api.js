@@ -19,14 +19,14 @@ class Api {
       if (res.ok) {
         return res.json();
       } else {
-        console.log(res);
+
         return Promise.reject(this._processError(res));
       }
     });
   }
   
   async uploadImage(data) {
-    console.log(data);
+
     this._headers.delete("Content-type");
 
     return fetch(this._baseUrl + "/upload", {
@@ -38,7 +38,7 @@ class Api {
       if (res.ok) {
         return res.json();
       } else {
-        console.log(res);
+
         return Promise.reject(this._processError(res));
       }
     })
@@ -58,6 +58,7 @@ class Api {
   }
 
   async addReview(data) {
+    console.log(data, 'REVIES')
     return this._request("/reviews", "POST", data);
   }
 
@@ -174,7 +175,7 @@ class Api {
   }
 
   async createBanner(data) {
-    console.log(data);
+
     return this._request(`/banners`, "POST", data); 
   }
 
@@ -187,7 +188,7 @@ class Api {
   //#region Orders
 
   async createOrder(data) {
-    console.log(data);
+
     return this._request("/orders", "POST", data);
   }
 

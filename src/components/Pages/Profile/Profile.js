@@ -50,7 +50,7 @@ export default function Profile(props) {
                 }
               </div>
               {
-                orders.length !== 0 &&
+      
                 <button className="profile__review-button"
                   onClick={props.openVideoModal}
                 >

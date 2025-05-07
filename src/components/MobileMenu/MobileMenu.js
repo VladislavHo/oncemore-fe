@@ -29,7 +29,7 @@ function MobileMenu(props) {
         </div>
         <div className="menu__main">
           <nav className="menu__nav">
-            <NavLink
+            {/* <NavLink
               className="menu__link"
               to="/cart"
               onClick={() => props.setMenuOpen(false)}
@@ -38,7 +38,7 @@ function MobileMenu(props) {
                 src={cart}
               />
               Корзина
-            </NavLink>
+            </NavLink> */}
             <NavLink
               className="menu__link"
               to="/"

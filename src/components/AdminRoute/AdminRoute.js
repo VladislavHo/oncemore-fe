@@ -6,7 +6,7 @@ function AdminRoute(props) {
   const user = useContext(UserContext).user;
 
   if (user.privilege < 1 || !user.name) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
   return <div className="protected-route">{props.children}</div>;
 }

@@ -11,17 +11,20 @@ function Modal(props) {
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
+    if (isOpen) {
+
+      document.addEventListener("keydown", handleEscape);
+    }
 
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [onClose, name]);
+  }, [onClose, name, isOpen]);
 
   const handleOverlay = (e) => {
     if (e.target === e.currentTarget) {
       onClose(name);
     }
   };
-
+  // if (!isOpen) return null;
   return (
     <div
       className={isOpen ? `modal modal_opened` : `modal`}
@@ -44,3 +47,4 @@ function Modal(props) {
 }
 
 export default Modal;
+// пароль к админке сайта info@oncemorecosmetics.ru    8ycF9HrM0b

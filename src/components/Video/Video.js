@@ -9,20 +9,17 @@ import "./Video.css";
 
 export default function Video(props) {
   const { video, views, product, _id } = props.data;
-  const [isHovered, setIsHovered] = useState(false);
+
   const parsedViews = parseViews(views);
-  const [productData, setProductData] = useState(props.getProduct(product));
+  // const [productData, setProductData] = useState(props.getProduct(product));
 
-  if (!productData) return;
-
-  console.log(isHovered, "isHovered", video);
+  // if (!productData) return;
 
 
   return (
     <NavLink className={`video ${props.isSmall ? "video_small" : ""}`}
       to={`/review?id=${_id}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+
     >
       <div className="video__container"
 
@@ -35,18 +32,19 @@ export default function Video(props) {
           style={{ border: 'none' }}
           allow="fullscreen"
           allowFullScreen
-        />        {/* <div className="video__views">
+        />
+        <div className="video__views">
           <img className="video__view-icon"
             src={play}
           />
           {parsedViews}
-        </div> */}
+        </div>
         <button className="video__button" />
       </div>
-      <div className="video__info">
-        <h4 className="video__title">{productData.name}</h4>
+      {/* <div className="video__info">
+        <h4 className="video__title">{video.name}</h4>
         <h5 className="video__price">{productData.price}₽</h5>
-      </div>
+      </div> */}
     </NavLink>
   );
 }

@@ -104,6 +104,7 @@
   position: absolute;
   top: 40%;
   cursor: pointer;
+  /* z-index: 1000; */
 }
 
 .catalogue__carousel-btn_prev {

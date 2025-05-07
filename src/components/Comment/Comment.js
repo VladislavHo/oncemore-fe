@@ -8,7 +8,6 @@ export default function Comment(props) {
   const [author, setAuthor] = useState(null);
   useState(() => {
 
-    console.log(data);
     if (!data.author) return;
 
     props.getUser(data.author)

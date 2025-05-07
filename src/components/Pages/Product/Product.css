@@ -250,6 +250,7 @@
 }
 
 .product__videos {
+  position: relative;
   margin-top: 40px;
   display: flex;
   gap: 20px;

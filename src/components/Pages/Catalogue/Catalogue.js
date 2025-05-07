@@ -7,14 +7,15 @@ import Video from "../../Video/Video";
 import AliceCarousel from "react-alice-carousel";
 import { NavLink, useSearchParams } from "react-router-dom";
 
-
-
 export default function Catalogue(props) {
   const colors = getUniqueItems(props.items.map((data) => data.color));
   const maxItemPrice = Math.max(...(props.items.map((data) => data.price)));
 
+  const categoryItemsCarousel = useRef();
+  const videoCarousel = useRef();
+  const itemCarousel = useRef();
   const [searchParams] = useSearchParams();
-  const category = searchParams.get("filter");
+  const category = searchParams.get("filter") || "Все"; // Добавлено значение по умолчанию
 
   const [isNew, setIsNew] = useState(false);
   const [discount, setDiscount] = useState(false);
@@ -22,10 +23,13 @@ export default function Catalogue(props) {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(maxItemPrice);
 
-  const itemCarousel = useRef();
-  const videoCarousel = useRef();
-  const videosProps = props.videos
-  const [filteredItems, setFilteredItems] = useState(props.items);
+  const videosProps = props.videos || []; // Добавлена проверка на null
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  useEffect(()=>{
+    setFilteredItems(props.items)
+  }, [props.items])
+
 
   const items = filteredItems.map((data, i) =>
     <ProductCard
@@ -63,23 +67,32 @@ export default function Catalogue(props) {
         && (item.price >= minPrice && item.price <= maxPrice)
         && (item.isNew || !isNew)
         && (item.discount > 0 || !discount)
-        && (category == "Новинки" ? item.isNew : item.category == category)
+        && (category === "Новинки" ? item.isNew : item.category === category)
       ))
     );
   }
 
-  function slideNext(carousel) {
-
-    const index = carousel.current.state.activeIndex;
-    const itemsOnSlide = 5;
-    if (index + 1 >=
-      carousel.current.state.transformationSet.length / itemsOnSlide)
-      return;
-
+  // Исправлена функция slideNext с проверкой на null
+  function slideNext(carousel, e) {
+    // Stop event propagation to prevent video playback
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    // Check if carousel.current is not null
+    if (!carousel.current) return;
     carousel.current.slideNext();
   }
 
-  function slidePrev(carousel) {
+  function slidePrev(carousel, e) {
+    // Stop event propagation to prevent video playback
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    if (!carousel.current) return;
     carousel.current.slidePrev();
   }
 
@@ -87,14 +100,25 @@ export default function Catalogue(props) {
 
   //#region  Variables
 
-
   useEffect(filterItems,
     [selectedColors, maxPrice, minPrice, isNew, discount, category]
   );
 
-
-
   //#endregion
+
+  // Общие настройки для карусели
+  const carouselSettings = {
+    paddingLeft: 0,
+    paddingRight: 0,
+    mouseTracking: true, // Исправлено: разделены mouseTracking и responsive
+    responsive: {
+      0: { items: 1 },
+      600: { items: 1 },
+      900: { items: 3 },
+      1200: { items: 5 }
+    },
+    disableButtonsControls: true
+  };
 
   return (
     <main className="catalogue">
@@ -129,7 +153,7 @@ export default function Catalogue(props) {
                 type="number"
                 id="filter-min-price"
                 min={0}
-                onChange={(e) => setMinPrice(e.target.value)}
+                onChange={(e) => setMinPrice(Number(e.target.value))} // Преобразование в число
                 defaultValue={minPrice}
                 placeholder="0"
               />
@@ -138,7 +162,7 @@ export default function Catalogue(props) {
                 type="number"
                 id="filter-max-price"
                 min={0}
-                onChange={(e) => setMaxPrice(e.target.value)}
+                onChange={(e) => setMaxPrice(Number(e.target.value))} // Преобразование в число
                 defaultValue={maxPrice}
                 placeholder={maxItemPrice}
               />
@@ -157,38 +181,22 @@ export default function Catalogue(props) {
         <div className="catalogue__gallery catalogue__gallery_scroll">
           <AliceCarousel
             items={items}
-            paddingLeft={0}
-            paddingRight={0}
-            mouseTrackingresponsive={{
-              0: {
-                items: 2
-              },
-              600: {
-                items: 3
-              },
-              900: {
-                items: 4
-              },
-              1200: {
-                items: 5
-              }
-            }}
-            disableButtonsControls={true}
-            ref={itemCarousel}
+            {...carouselSettings} // Используем общие настройки
+            ref={categoryItemsCarousel}
           />
           <button
             className="catalogue__carousel-btn catalogue__carousel-btn_prev"
             type="button"
-            onClick={() => slidePrev(itemCarousel)}
+            onClick={(e) => slidePrev(categoryItemsCarousel, e)}
           />
           <button
             className="catalogue__carousel-btn catalogue__carousel-btn_next"
             type="button"
-            onClick={() => slideNext(itemCarousel)}
+            onClick={(e) => slideNext(categoryItemsCarousel, e)}
           />
         </div>
         <div className="catalogue__category">
-        <h3 className="catalogue__subtitle">{`#${category.toLowerCase()}`}</h3>
+          <h3 className="catalogue__subtitle">{`#${category.toLowerCase()}`}</h3>
           <NavLink className="catalogue__more"
             to={`/items/gallery?filtering=category&filter=${category}&type=items`}
           >
@@ -198,39 +206,23 @@ export default function Catalogue(props) {
         <div className="catalogue__gallery catalogue__gallery_scroll">
           <AliceCarousel
             items={items}
-            paddingLeft={0}
-            paddingRight={0}
-            mouseTrackingresponsive={{
-              0: {
-                items: 2
-              },
-              600: {
-                items: 3
-              },
-              900: {
-                items: 4
-              },
-              1200: {
-                items: 5
-              }
-            }}
-            disableButtonsControls={true}
+            {...carouselSettings} // Используем общие настройки
             ref={itemCarousel}
           />
           <button
             className="catalogue__carousel-btn catalogue__carousel-btn_prev"
             type="button"
-            onClick={() => slidePrev(itemCarousel)}
+            onClick={(e) => slidePrev(itemCarousel, e)}
           />
           <button
             className="catalogue__carousel-btn catalogue__carousel-btn_next"
             type="button"
-            onClick={() => slideNext(itemCarousel)}
+            onClick={(e) => slideNext(itemCarousel, e)}
           />
         </div>
       </section>
 
-      {videos.length > 0 ?
+      {videos.length > 0 && ( // Улучшенное условное рендеринг
         <section className="catalogue__reviews">
           <div className="catalogue__category">
             <h3 className="catalogue__subtitle">#видео отзывы</h3>
@@ -243,39 +235,22 @@ export default function Catalogue(props) {
           <div className="catalogue__videos">
             <AliceCarousel
               items={videos}
-              paddingLeft={0}
-              paddingRight={0}
-              mouseTrackingresponsive={{
-                0: {
-                  items: 2
-                },
-                600: {
-                  items: 3
-                },
-                900: {
-                  items: 4
-                },
-                1200: {
-                  items: 5
-                }
-              }}
-              disableButtonsControls={true}
+              {...carouselSettings} // Используем общие настройки
               ref={videoCarousel}
             />
-            <button
+            {/* <button
               className="catalogue__carousel-btn catalogue__carousel-btn_prev"
               type="button"
-              onClick={() => slidePrev(videoCarousel)}
+              onClick={(e) => slidePrev(videoCarousel, e)}
             />
             <button
               className="catalogue__carousel-btn catalogue__carousel-btn_next"
               type="button"
-              onClick={() => slideNext(videoCarousel)}
-            />
+              onClick={(e) => slideNext(videoCarousel, e)}
+            /> */}
           </div>
         </section>
-        : ""
-      }
+      )}
     </main>
   );
 }

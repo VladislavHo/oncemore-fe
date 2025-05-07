@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import FormModal from "../FormModal/FormModal";
 import { FormValidator } from "../../../utils/FormValidator";
-import { useSearchParams } from "react-router-dom";
 
 
 function parseVideoLink(videoLink) {
@@ -24,7 +23,6 @@ function parseVideoLink(videoLink) {
 function VideoModal(props) {
   const [orders, setOrders] = useState([]);
   const [video, setVideo] = useState("");
-
   const [reviewText, setReviewText] = useState("");
 
 
@@ -33,8 +31,15 @@ function VideoModal(props) {
   const formRef = useRef();
   const [product, setProduct] = useState(null)
 
+  const url = new URL(window.location.href)
+  const searchParams = new URLSearchParams(url.search)
+  const productId = searchParams.get('id')
+
   useEffect(() => {
-    // Load orders when the component mounts or props change
+    const filter = productId
+    if (url.pathname === '/item') {
+      setProduct(filter)
+    }
     if (props) {
       const getDataOrders = async () => {
         try {
@@ -66,7 +71,6 @@ function VideoModal(props) {
     const videoObj = {
       src, oid, id
     }
-
     return props.loadVideo(videoObj, product, reviewText)
       .then(props.onClose);
 
@@ -78,21 +82,21 @@ function VideoModal(props) {
     enableValidation();
   }, [formRef]);
 
-  console.log(product, 'PRODUCT!!!');
-
 
   return (
     <FormModal
       name={props.name}
       onClose={props.onClose}
       isOpen={props.isOpen}
-      title="%Новый обзор%"
+      title="Новый обзор"
       buttonText="Загрузить"
       formRef={formRef}
       isButtonActive={isButtonActive}
       onSubmit={submit}
     >
+
       <label className="modal__label">
+
         <p className="modal__label-text">Ссылка на видео*</p>
         <input
           className="modal__input"
@@ -109,31 +113,38 @@ function VideoModal(props) {
       </label>
 
       <label className="modal__label">
-        <p className="modal__label-text">Выбрать продукт*</p>
+        {
+          url.pathname !== '/item' && (
+            <>
+              <p className="modal__label-text">Выбрать продукт*</p>
+              <select
+                className="select__orders"
+                onChange={(e) => setProduct(e.target.value)}
+                defaultValue=""
+              >
+                <option value="" disabled>Выбрать</option>
+                {orders && Array.isArray(orders) && orders.map((o, index) => {
+                  try {
+                    const items = o.items ? JSON.parse(o.items) : [];
+                    const orderParse = items[0];
+                    if (!orderParse) return null;
 
-        <select
-          className="select__orders"
-          onChange={(e) => setProduct(e.target.value)}
-          defaultValue=""
-        >
-          <option value="" disabled>Выбрать</option>
-          {orders && Array.isArray(orders) && orders.map((o, index) => {
-            try {
-              const items = o.items ? JSON.parse(o.items) : [];
-              const orderParse = items[0];
-              if (!orderParse) return null;
+                    return (
+                      <option key={orderParse._id} value={orderParse._id}>
+                        {orderParse.name}
+                      </option>
+                    );
+                  } catch (error) {
+                    console.error("Error parsing items:", error);
+                    return null;
+                  }
+                })}
+              </select>
+            </>
 
-              return (
-                <option key={orderParse._id} value={orderParse._id}>
-                  {orderParse.name}
-                </option>
-              );
-            } catch (error) {
-              console.error("Error parsing items:", error);
-              return null;
-            }
-          })}
-        </select>
+          )
+        }
+
 
       </label>
 

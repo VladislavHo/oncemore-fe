@@ -39,7 +39,7 @@
 
 .video__views {
   position: absolute;
-  bottom: 10px;
+  top: 10px;
   left: 10px;
   color: #FFF;
   font-size: 14px;

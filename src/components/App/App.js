@@ -1,371 +1,70 @@
-//#region Imports
 
+//#region Imports
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { Navigate, Route, Routes } from "react-router";
+
+// Компоненты
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-import "./App.css";
-import { contacts, userLinks, baseUrl } from "../../utils/constants";
-import { Navigate, Route, Routes, json } from "react-router";
-import { useEffect, useRef, useState } from "react";
-import LoginModal from "../Modals/LoginModal/LoginModal";
-import RegisterModal from "../Modals/RegisterModal/RegisterModal";
 import MobileMenu from "../MobileMenu/MobileMenu";
+import AdminRoute from "../AdminRoute/AdminRoute";
+import CookieComponent from "../Cookies/Cookies";
+
+// Страницы
 import Banners from "../Pages/Banners/Banners";
 import Product from "../Pages/Product/Product";
 import Catalogue from "../Pages/Catalogue/Catalogue";
-import api from "../../utils/api";
 import VideoPlayer from "../Pages/VideoPlayer/VideoPlayer";
-
-import { CartContext } from "../../contexts/CartContext";
-import { UserContext } from "../../contexts/UserContext";
 import Cart from "../Pages/Cart/Cart";
 import Gallery from "../Pages/Gallery/Gallery";
 import Liked from "../Pages/Liked/Liked";
 import Profile from "../Pages/Profile/Profile";
+import Admin from "../Pages/Admin/Admin";
+import Logout from "../Pages/Logout/Logout";
+import Orders from "../Pages/Orders/Orders";
+import Checkout from "../Pages/Checkout/Checkout";
+
+// Документы
+import Confidential from "../Pages/Documents/Confidential";
+import PersonalData from "../Pages/Documents/PersonalData";
+import Contract from "../Pages/Documents/Contract";
+
+// Модальные окна
+import LoginModal from "../Modals/LoginModal/LoginModal";
+import RegisterModal from "../Modals/RegisterModal/RegisterModal";
 import VideoModal from "../Modals/VideoModal/VideoModal";
 import UserModal from "../Modals/UserModal/UserModal";
-import Admin from "../Pages/Admin/Admin";
+import ShareModal from "../Modals/ShareModal/ShareModal";
+
+// Модальные окна для продуктов
 import NewProductModal from "../Modals/Product Modals/NewProductModal";
-import AdminRoute from "../AdminRoute/AdminRoute";
-import { getToken, removeToken, setToken } from "../../utils/token";
-import Logout from "../Pages/Logout/Logout";
+import EditProductModal from "../Modals/Product Modals/EditProductModal";
+import DeleteProductModal from "../Modals/Product Modals/DeleteProductModal";
+import ProductPhotoModal from "../Modals/Product Modals/ProductPhotoModal";
+import ProductStockModal from "../Modals/Product Modals/ProductStockModal";
+import DiscountModal from "../Modals/Product Modals/DiscountModal";
+
+// Модальные окна для категорий и баннеров
 import CategoryModal from "../Modals/Category Modals/CategoryModal";
 import CategoryDeleteModal from "../Modals/Category Modals/CategoryDeleteModal";
 import BannerDeleteModal from "../Modals/Banner Modals/BannerDeleteModal";
 import BannerModal from "../Modals/Banner Modals/BannerModal";
-import Orders from "../Pages/Orders/Orders";
-import ShareModal from "../Modals/ShareModal/ShareModal";
-import Confidential from "../Pages/Documents/Confidential";
-import PersonalData from "../Pages/Documents/PersonalData";
-import EditProductModal from "../Modals/Product Modals/EditProductModal";
-import DeleteProductModal from "../Modals/Product Modals/DeleteProductModal";
-import ProductPhotoModal from "../Modals/Product Modals/ProductPhotoModal";
-import Contract from "../Pages/Documents/Contract";
-import ProductStockModal from "../Modals/Product Modals/ProductStockModal";
-import DiscountModal from "../Modals/Product Modals/DiscountModal";
-import Checkout from "../Pages/Checkout/Checkout";
-import CookieComponent from "../Cookies/Cookies";
 
+// Утилиты и константы
+import { contacts, userLinks, baseUrl } from "../../utils/constants";
+import api from "../../utils/api";
+import { getToken, removeToken, setToken } from "../../utils/token";
 
+// Контексты
+import { CartContext } from "../../contexts/CartContext";
+import { UserContext } from "../../contexts/UserContext";
+
+// Стили
+import "./App.css";
 //#endregion
 
-export default function App(props) {
-  //#region Methods
-
-  //#region Modals
-
-  function handleModalClose(modalId) {
-    setModalsActivity({ ...modalsActivity, [modalId]: false });
-  }
-
-  function handleModalOpen(modalId) {
-    setModalsActivity({ ...modalsActivity, [modalId]: true });
-  }
-
-  function openAnotherModal(modalId, newModalId) {
-    setModalsActivity({
-      ...modalsActivity,
-      [modalId]: false,
-      [newModalId]: true,
-    });
-  }
-
-  //#endregion
-
-  //#region Products & Cart
-
-  function getProduct(id) {
-    const product = products.find((product) => product._id == id);
-    return product ? product : {};
-  }
-
-  async function getProducts() {
-    return api.getProducts();
-  }
-
-  function addItem(id) {
-    const item = products.find((pr) => pr._id == id);
-    const index = cart.findIndex((cartItem) => cartItem._id == item._id)
-    if (index != -1) {
-      cartAmounts[index]++;
-      localStorage.setItem("cartAmounts", JSON.stringify(cartAmounts));
-    } else {
-      localStorage.setItem("cartAmounts", JSON.stringify([...cartAmounts, 1]));
-      localStorage.setItem("cart", JSON.stringify([...cart, item]));
-      setCart([...cart, item]);
-      cartAmounts.push(1);
-    }
-    setCartItemsNum(cartItemsNum + 1);
-  }
-
-  function clearCart() {
-    setCart([]);
-    localStorage.clear("cart")
-  }
-
-  function likeItem(e, id) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    if (!isLoggedIn || !user) {
-      handleModalOpen("login");
-      return;
-    }
-
-    const item = products.find((item) => item._id == id);
-    if (item.likes.includes(user.id)) {
-      item.likes.pop(user.id);
-      api.unlikeProduct(id);
-    }
-    else {
-      item.likes.push(user.id);
-      api.likeProduct(id);
-    }
-  }
-
-  async function addProduct(photo, productData) {
-    const formData = new FormData();
-    formData.append("file", photo);
-
-    return api.uploadImage(formData)
-      .then((res) => res.data.path)
-      .then((image) => {
-        productData.photo = baseUrl + "/" + image;
-        return api.addProduct(productData);
-      })
-      .catch((err) => console.log(err));
-  }
-
-  async function editProduct(id, productData) {
-    api.editProduct(id, productData);
-  }
-
-  async function deleteProduct(id) {
-    api.deleteProduct(id);
-  }
-
-  async function addProductPhoto(id, photo) {
-    const formData = new FormData();
-    formData.append("file", photo);
-
-    return api.uploadImage(formData)
-      .then((res) => res.data.path)
-      .then((image) => {
-        image = baseUrl + "/" + image;
-        return api.addProductPhoto(id, { photo: image })
-      })
-      .catch((err) => console.log(err));
-  }
-
-  async function addProductStock(id, stock) {
-    return api.editProduct(id, { stock });
-  }
-
-  async function editDiscount(id, discount) {
-    return api.editProduct(id, { discount });
-  }
-
-  //#endregion
-
-  //#region Reviews
-
-  function productVideoModal(productData) {
-    setCurrentProduct(productData);
-    handleModalOpen("video");
-  }
-
-  async function getVideos() {
-    return api.getVideos()
-      .then((res) => res.data);
-  }
-
-  function deleteReview(reviewData) {
-    return api.deleteReview(reviewData._id);
-  }
-
-  function addView(videoId, views, userId) {
-    api.addView(videoId, { views });
-
-    if ((views + 1) % 1000 == 0) {
-      const addedPoints = (views + 1) == 1000 ? 100 : 10;
-      api.getUser(userId)
-        .then((res) => res.data.points)
-        .then((points) => api.changeUserPoints(
-          userId, { points: points + addedPoints }))
-        .catch((err) => console.log(err));
-    }
-  }
-
-  async function addReview(video, product, text) {
-    const author = user._id;
-    console.log({ video, product, author, text }, 'ADD REVIEWS')
-    api.addReview({ video, product, author, text });
-  }
-
-  //#endregion
-
-  //#region Comments
-
-  function deleteComment(commentData) {
-
-  }
-
-  async function getComments(videoId) {
-    return api.getComments(videoId);
-  }
-
-  function sendComment(commentText, videoId) {
-    const userId = user._id;
-    api.addComment(commentText, userId, videoId)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  }
-
-  function likeComment(commentId) {
-
-  }
-
-  //#endregion
-
-  //#region User
-
-  async function signIn(email, password) {
-    return api
-      .signIn(email, password)
-      .then((res) => {
-        setToken(res.token);
-        auth(res.token);
-      })
-      .catch((err) => alert(err));
-  }
-
-  async function auth(token) {
-    return api
-      .auth(token)
-      .then((res) => {
-        setUser(res.data);
-        setLoggedIn(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  async function signUp(email, password, name, handle, phone) {
-    return api.createUser({ email, password, name, handle, phone })
-      .then(() => signIn(email, password))
-      .catch((err) => alert(err));
-  }
-
-  function logOut() {
-    removeToken();
-    setLoggedIn(false);
-  }
-
-  function checkToken() {
-    const token = getToken();
-    if (token) {
-      auth(token);
-    }
-  }
-
-  function getUser(id) {
-    return api.getUser(id);
-  }
-
-  async function blockUser(userData) {
-    return api.editUser(userData._id, { blocked: true });
-  }
-
-  async function editUser(image) {
-    const formData = new FormData();
-    formData.append("file", image);
-
-    return api.uploadImage(formData)
-      .then((res) => res.data.path)
-      .then((avatar) => {
-        avatar = baseUrl + "/" + avatar;
-        return api.editUser({ avatar });
-      })
-      .then((data) => console.log(data));
-  }
-
-  async function spendPoints(points) {
-    if (!user) return;
-
-    const currentPoints = user.points;
-    return api.changeUserPoints(user._id, { points: currentPoints - points });
-  }
-
-  //#endregion
-
-  //#region Categories & Banners
-
-  async function deleteCategory(name) {
-    return api.deleteCategory({ name });
-  }
-
-  async function createCategory(name) {
-    const link = `/items?filter=${name}`;
-    return api.createCategory({ name, link });
-  }
-
-  async function getCategories() {
-    return api.getCategories()
-      .then((res) => res.data);
-  }
-
-  async function deleteBanner(id) {
-    return api.deleteBanner(id);
-  }
-
-  async function createBanner(title, subtitle, image, paragraphs) {
-    const formData = new FormData();
-    formData.append("file", image);
-
-    return api.uploadImage(formData)
-      .then((res) => res.data.path)
-      .then((image) => {
-        image = baseUrl + "/" + image;
-        return api.createBanner({ title, subtitle, paragraphs, image });
-      })
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-  }
-
-  async function getBanners() {
-    return api.getBanners()
-      .then((res) => res.data);
-  }
-
-  //#endregion
-
-  //#region Orders
-
-  function createOrder(data) {
-    api.createOrder(data);
-  }
-
-  function updateOrderStatus(id, status) {
-    return api.updateOrderStatus(id, { status });
-  }
-
-  async function getMyOrders() {
-    return api.getMyOrders()
-      .then((res) => res.data);
-  }
-
-  async function getOrders() {
-    return api.getOrders()
-      .then((res) => res.data);
-  }
-
-  //#endregion
-
-  //#endregion
-
-
-  //#region Variables Setup
-
+export default function App() {
+  //#region Состояние
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [modalsActivity, setModalsActivity] = useState({
     signup: false,
@@ -395,46 +94,539 @@ export default function App(props) {
   const [user, setUser] = useState({});
   const [currentProduct, setCurrentProduct] = useState("");
   const [cartItemsNum, setCartItemsNum] = useState(0);
+  //#endregion
 
-  useEffect(() => {
-    getCategories()
-      .then((res) => setCategories(res));
-    getProducts()
-      .then((res) => setProducts(res.data));
-    getVideos()
-      .then((res) => setVideos(res));
-    getBanners()
-      .then((res) => setBanners(res));
-    checkToken();
+  //#region Методы для модальных окон
+  const handleModalClose = useCallback((modalId) => {
+    setModalsActivity((prev) => ({ ...prev, [modalId]: false }));
+  }, []);
 
-    const storageCart = localStorage.getItem("cart");
-    if (storageCart)
-      setCart(JSON.parse(storageCart));
-    const storageCartAmounts = localStorage.getItem("cartAmounts");
-    if (storageCartAmounts) {
-      setCartAmounts(JSON.parse(storageCartAmounts));
-      setCartItemsNum(JSON.parse(storageCartAmounts)
-        .reduce((i, sum) => sum + i, 0));
+  const handleModalOpen = useCallback((modalId) => {
+    setModalsActivity((prev) => ({ ...prev, [modalId]: true }));
+  }, []);
+
+  const openAnotherModal = useCallback((modalId, newModalId) => {
+    setModalsActivity((prev) => ({
+      ...prev,
+      [modalId]: false,
+      [newModalId]: true,
+    }));
+  }, []);
+  //#endregion
+
+  //#region Методы для продуктов и корзины
+  const getProduct = useCallback((id) => {
+    const product = products.find((product) => product._id == id);
+    return product ? product : {};
+  }, [products]);
+
+  const getProducts = useCallback(async () => {
+    return api.getProducts();
+  }, []);
+
+  const addItem = useCallback((id) => {
+    const item = products.find((pr) => pr._id == id);
+    if (!item) return;
+
+    const index = cart.findIndex((cartItem) => cartItem._id == item._id);
+    const newCartAmounts = [...cartAmounts];
+
+    if (index !== -1) {
+      newCartAmounts[index]++;
+      setCartAmounts(newCartAmounts);
+      localStorage.setItem("cartAmounts", JSON.stringify(newCartAmounts));
+    } else {
+      const newCart = [...cart, item];
+      const newAmounts = [...cartAmounts, 1];
+
+      setCart(newCart);
+      setCartAmounts(newAmounts);
+
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      localStorage.setItem("cartAmounts", JSON.stringify(newAmounts));
+    }
+
+    setCartItemsNum((prev) => prev + 1);
+  }, [products, cart, cartAmounts]);
+
+  const clearCart = useCallback(() => {
+    setCart([]);
+    setCartAmounts([]);
+    setCartItemsNum(0);
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cartAmounts");
+  }, []);
+
+  const likeItem = useCallback((e, id) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (!isLoggedIn || !user) {
+      handleModalOpen("login");
+      return;
+    }
+
+    const updatedProducts = [...products];
+    const itemIndex = updatedProducts.findIndex((item) => item._id == id);
+
+    if (itemIndex === -1) return;
+
+    const item = updatedProducts[itemIndex];
+
+    if (item.likes.includes(user.id)) {
+      item.likes = item.likes.filter(likeId => likeId !== user.id);
+      api.unlikeProduct(id);
+    } else {
+      item.likes.push(user.id);
+      api.likeProduct(id);
+    }
+
+    setProducts(updatedProducts);
+  }, [isLoggedIn, user, products, handleModalOpen]);
+
+  const addProduct = useCallback(async (photo, productData) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", photo);
+
+      const res = await api.uploadImage(formData);
+      const imagePath = res.data.path;
+
+      productData.photo = `${baseUrl}/${imagePath}`;
+      return await api.addProduct(productData);
+    } catch (err) {
+
+      throw err;
     }
   }, []);
 
+  const editProduct = useCallback(async (id, productData) => {
+    try {
+      return await api.editProduct(id, productData);
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const deleteProduct = useCallback(async (id) => {
+    try {
+      return await api.deleteProduct(id);
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const addProductPhoto = useCallback(async (id, photo) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", photo);
+
+      const res = await api.uploadImage(formData);
+      const imagePath = res.data.path;
+      const imageUrl = `${baseUrl}/${imagePath}`;
+
+      return await api.addProductPhoto(id, { photo: imageUrl });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const addProductStock = useCallback(async (id, stock) => {
+    try {
+      return await api.editProduct(id, { stock });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const editDiscount = useCallback(async (id, discount) => {
+    try {
+      return await api.editProduct(id, { discount });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+  //#endregion
+
+  //#region Методы для отзывов и видео
+  const productVideoModal = useCallback((productData) => {
+    setCurrentProduct(productData);
+    handleModalOpen("video");
+  }, [handleModalOpen]);
+
+  const getVideos = useCallback(async () => {
+    try {
+      const res = await api.getVideos();
+      return res.data;
+    } catch (err) {
+
+      return [];
+    }
+  }, []);
+
+  const deleteReview = useCallback(async (reviewData) => {
+    try {
+      return await api.deleteReview(reviewData._id);
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const addView = useCallback(async (videoId, views, userId) => {
+    try {
+      await api.addView(videoId, { views });
+
+      if ((views + 1) % 1000 === 0) {
+        const addedPoints = (views + 1) === 1000 ? 100 : 10;
+        const userRes = await api.getUser(userId);
+        const currentPoints = userRes.data.points;
+
+        await api.changeUserPoints(userId, { points: currentPoints + addedPoints });
+      }
+    } catch (err) {
+
+    }
+  }, []);
+
+  const addReview = useCallback(async (video, product, text) => {
+    try {
+      // Если пользователь авторизован, используем его ID, иначе null
+      const author = user && user._id ? user._id : null;
+      
+      // Отправляем запрос на добавление обзора
+      await api.addReview({ video, product, author, text });
+      
+      // Можно добавить обновление списка обзоров или другие действия после успешного добавления
+      console.log('Обзор успешно добавлен');
+    } catch (err) {
+      console.error('Ошибка при добавлении обзора:', err);
+      // Здесь можно добавить обработку ошибок, например, показать уведомление пользователю
+    }
+  }, [user]);
+  //#endregion
+
+  //#region Методы для комментариев
+  const getComments = useCallback(async (videoId) => {
+    try {
+      return await api.getComments(videoId);
+    } catch (err) {
+
+      return [];
+    }
+  }, []);
+
+  const sendComment = useCallback(async (commentText, videoId) => {
+    if (!user || !user._id) {
+      handleModalOpen("login");
+      return;
+    }
+
+    try {
+      const userId = user._id;
+      await api.addComment(commentText, userId, videoId);
+    } catch (err) {
+
+    }
+  }, [user, handleModalOpen]);
+  //#endregion
+
+  //#region Методы для пользователей
+  const signIn = useCallback(async (email, password) => {
+    try {
+      const res = await api.signIn(email, password);
+      setToken(res.token);
+      await auth(res.token);
+    } catch (err) {
+      alert(err);
+      throw err;
+    }
+  }, []);
+
+  const auth = useCallback(async (token) => {
+    try {
+      const res = await api.auth(token);
+      setUser(res.data);
+      setLoggedIn(true);
+    } catch (err) {
+   removeToken();
+      setLoggedIn(false);
+    }
+  }, []);
+
+  const signUp = useCallback(async (email, password, name, handle, phone) => {
+    try {
+      await api.createUser({ email, password, name, handle, phone });
+      await signIn(email, password);
+    } catch (err) {
+      alert(err);
+      throw err;
+    }
+  }, [signIn]);
+
+  const logOut = useCallback(() => {
+    // First remove token and clear user data
+    removeToken();
+
+    // Update state in specific order
+    // setUser({});
+    setLoggedIn(false);
+
+    // Clear cart and other user data
+    // setCart([]);
+    // setCartAmounts([]);
+    // setCartItemsNum(0);
+    // localStorage.removeItem("cart");
+    // localStorage.removeItem("cartAmounts");
+  }, []);
+
+  const checkToken = useCallback(() => {
+    const token = getToken();
+    if (token) {
+      auth(token);
+    }
+  }, [auth]);
+
+  const getUser = useCallback(async (id) => {
+    try {
+      return await api.getUser(id);
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const blockUser = useCallback(async (userData) => {
+    try {
+      return await api.editUser(userData._id, { blocked: true });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const editUser = useCallback(async (image) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", image);
+
+      const res = await api.uploadImage(formData);
+      const avatarPath = res.data.path;
+      const avatarUrl = `${baseUrl}/${avatarPath}`;
+
+      return await api.editUser({ avatar: avatarUrl });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const spendPoints = useCallback(async (points) => {
+    if (!user || !user._id) return;
+
+    try {
+      const currentPoints = user.points;
+      return await api.changeUserPoints(user._id, { points: currentPoints - points });
+    } catch (err) {
+
+      throw err;
+    }
+  }, [user]);
+  //#endregion
+
+  //#region Методы для категорий и баннеров
+  const deleteCategory = useCallback(async (name) => {
+    try {
+      return await api.deleteCategory({ name });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const createCategory = useCallback(async (name) => {
+    try {
+      const link = `/items?filter=${name}`;
+      return await api.createCategory({ name, link });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const getCategories = useCallback(async () => {
+    try {
+      const res = await api.getCategories();
+      return res.data;
+    } catch (err) {
+
+      return [];
+    }
+  }, []);
+
+  const deleteBanner = useCallback(async (id) => {
+    try {
+      return await api.deleteBanner(id);
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const createBanner = useCallback(async (title, subtitle, image, paragraphs) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", image);
+
+      const res = await api.uploadImage(formData);
+      const imagePath = res.data.path;
+      const imageUrl = `${baseUrl}/${imagePath}`;
+
+      return await api.createBanner({ title, subtitle, paragraphs, image: imageUrl });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const getBanners = useCallback(async () => {
+    try {
+      const res = await api.getBanners();
+      return res.data;
+    } catch (err) {
+
+      return [];
+    }
+  }, []);
+  //#endregion
+
+  //#region Методы для заказов
+  const createOrder = useCallback(async (data) => {
+    try {
+      return await api.createOrder(data);
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const updateOrderStatus = useCallback(async (id, status) => {
+    try {
+      return await api.updateOrderStatus(id, { status });
+    } catch (err) {
+
+      throw err;
+    }
+  }, []);
+
+  const getMyOrders = useCallback(async () => {
+    try {
+      const res = await api.getMyOrders();
+      return res.data;
+    } catch (err) {
+
+      return [];
+    }
+  }, []);
+
+  const getOrders = useCallback(async () => {
+    try {
+      const res = await api.getOrders();
+      return res.data;
+    } catch (err) {
+
+      return [];
+    }
+  }, []);
+  //#endregion
+
+  //#region Эффекты
+  // Инициализация данных при загрузке
+  useEffect(() => {
+    const initializeData = async () => {
+      try {
+        const [categoriesData, productsData, videosData, bannersData] = await Promise.all([
+          getCategories(),
+          getProducts(),
+          getVideos(),
+          getBanners()
+        ]);
+
+        setCategories(categoriesData);
+        setProducts(productsData.data);
+        setVideos(videosData);
+        setBanners(bannersData);
+      } catch (err) {
+
+      }
+    };
+
+    initializeData();
+    checkToken();
+
+    // Загрузка корзины из localStorage
+    const storageCart = localStorage.getItem("cart");
+    if (storageCart) {
+      setCart(JSON.parse(storageCart));
+    }
+
+    const storageCartAmounts = localStorage.getItem("cartAmounts");
+    if (storageCartAmounts) {
+      const amounts = JSON.parse(storageCartAmounts);
+      setCartAmounts(amounts);
+      setCartItemsNum(amounts.reduce((sum, i) => sum + i, 0));
+    }
+
+    // Обработчик изменения размера окна
+    const handleResize = () => {
+      setOnMobile(window.innerWidth < 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [getCategories, getProducts, getVideos, getBanners, checkToken]);
+
+  // Загрузка данных пользователя при изменении статуса авторизации
   useEffect(() => {
     if (!isLoggedIn) return;
 
     api.getCurrentUser()
       .then((res) => setUser(res.data))
-      .catch(() => setLoggedIn(false));
+      .catch((err) => {
+
+        setLoggedIn(false);
+      });
   }, [isLoggedIn]);
-
-
-
   //#endregion
 
-  //#region Rendering
+  //#region Мемоизированные значения контекста
+  const cartContextValue = useMemo(() => ({
+    cart,
+    addItem,
+    cartAmounts
+  }), [cart, addItem, cartAmounts]);
+
+  const userContextValue = useMemo(() => ({
+    user
+  }), [user]);
+  //#endregion
+
+  // Memoized filtered categories
+  const newProductsCategory = useMemo(() => {
+    return categories && categories.length > 0
+      ? categories.filter(c => c.name === "Новинки")
+      : [];
+  }, [categories]);
+
   return (
     <div className="page">
-      <CartContext.Provider value={{ cart, addItem, cartAmounts }}>
-        <UserContext.Provider value={{ user }}>
+      <CartContext.Provider value={cartContextValue}>
+        <UserContext.Provider value={userContextValue}>
           <Header
             categories={categories}
             userLinks={userLinks}
@@ -444,6 +636,7 @@ export default function App(props) {
             setMenuOpen={setMenuOpen}
             cartItemsNum={cartItemsNum}
           />
+
           <div className="page__main">
             <Routes>
               <Route path="item" element={
@@ -488,21 +681,21 @@ export default function App(props) {
                   deleteReview={deleteReview}
                   blockUser={blockUser}
                   getComments={getComments}
-                  deleteComment={deleteComment}
+                  deleteComment={() => { }}
                   sendComment={sendComment}
-                  likeComment={likeComment}
+                  likeComment={() => { }}
                   addView={addView}
                   openShareModal={() => handleModalOpen("share")}
                 />
               } />
-              <Route path="liked" element={
+              {/* <Route path="liked" element={
                 <Liked
                   isLoggedIn={isLoggedIn}
                   openSignUp={() => handleModalOpen("signup")}
                   items={products}
                   addItem={addItem}
                 />
-              } />
+              } /> */}
               <Route path="cart" element={
                 <Cart
                   clearCart={clearCart}
@@ -567,29 +760,37 @@ export default function App(props) {
               } />
               <Route path="/" element={
                 <Banners
-                  banners={banners}
+                  categories={newProductsCategory}
                 />
               } />
+              {/* <Route path='/login' element={
+                <LoginModal
+                  name="login"
+                  onClose={handleModalClose}
+                  isOpen={modalsActivity["login"]}
+                  openAnotherModal={() => openAnotherModal("login", "signup")}
+                  signIn={signIn}
+                />
+              } /> */}
             </Routes>
           </div>
-          <Footer
-            contacts={contacts}
-          />
+
+          <Footer contacts={contacts} />
 
           <div className="modals">
-            <RegisterModal
-              name="signup"
-              onClose={handleModalClose}
-              isOpen={modalsActivity["signup"]}
-              openAnotherModal={() => openAnotherModal("signup", "login")}
-              signUp={signUp}
-            />
             <LoginModal
               name="login"
               onClose={handleModalClose}
               isOpen={modalsActivity["login"]}
               openAnotherModal={() => openAnotherModal("login", "signup")}
               signIn={signIn}
+            />
+            <RegisterModal
+              name="signup"
+              onClose={handleModalClose}
+              isOpen={modalsActivity["signup"]}
+              openAnotherModal={() => openAnotherModal("signup", "login")}
+              signUp={signUp}
             />
             <VideoModal
               name="video"
@@ -605,7 +806,6 @@ export default function App(props) {
               isOpen={modalsActivity["user"]}
               onSubmit={editUser}
             />
-
             <NewProductModal
               name="newproduct"
               onClose={handleModalClose}
@@ -642,8 +842,6 @@ export default function App(props) {
               isOpen={modalsActivity["discount"]}
               onSubmit={editDiscount}
             />
-
-
             <CategoryModal
               name="category"
               onClose={handleModalClose}
@@ -675,8 +873,8 @@ export default function App(props) {
               onClose={handleModalClose}
               isOpen={modalsActivity["share"]}
             />
-
           </div>
+
           <MobileMenu
             isMenuOpen={isMenuOpen}
             setMenuOpen={setMenuOpen}
@@ -685,13 +883,10 @@ export default function App(props) {
             isLoggedIn={isLoggedIn}
             userLinks={userLinks}
           />
-          {
-            <CookieComponent />
-          }
+
+          <CookieComponent />
         </UserContext.Provider>
       </CartContext.Provider>
     </div>
   );
-
-  //#endregion
 }

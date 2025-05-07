@@ -41,8 +41,10 @@ function NewProductModal(props) {
   const [description, setDescription] = useState("");
   const [appliance, setAppliance] = useState("");
   const [composition, setComposition] = useState("");
-  const [colorImage, setColorImage] = useState("#000000");
+  const [colorImage, setColorImage] = useState("#fff");
   const [type, setType] = useState("");
+
+  console.log(color)
 
   return (
     <FormModal
@@ -153,6 +155,7 @@ function NewProductModal(props) {
       <label className="modal__label">
         <p className="modal__label-text">Цвет (для выбора)</p>
         <input
+        style={{backgroundColor: colorImage, padding: 0}}
           className="modal__input modal__input_file"
           type="color"
           id="product-color-image"

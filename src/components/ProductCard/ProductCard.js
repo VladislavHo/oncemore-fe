@@ -17,19 +17,10 @@ export default function ProductCard(props) {
     setIsLiked(!isLiked);
   }
 
-
-  function onHover(e) {
-    console.log(e.currentTarget)
-  }
-
   function navigateTo(e, url) {
-    console.log(e.currentTarget);
-    console.log(e.target);
 
     navigate(url);
   }
-
-
   const { photos, name, price, _id, likes, stock, discount } = props.data;
   const userId = useContext(UserContext).user._id;
   const [isLiked, setIsLiked] = useState(likes.includes(userId));
@@ -81,7 +72,7 @@ export default function ProductCard(props) {
           }
         </h4>
       </div>
-      {
+      {/* {
         isDisabled ? "" :
         <button className="item__cart-button"
           type="button"
@@ -91,11 +82,11 @@ export default function ProductCard(props) {
             props.addItem(_id)
           }}
         />
-      }
-      <button className={`item__like-button 
+      } */}
+      {/* <button className={`item__like-button 
           ${isLiked ? "item__like-button_active" : ""}`}
         onClick={(e) => toggleLike(e)}
-      />
+      /> */}
     </div>
   );
 }

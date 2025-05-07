@@ -1,11 +1,22 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "./Main.css";
-export default function Main() {
+export default function Main({ categories }) {
+  const category = categories[0];
+
   return (
-    <div className="main" style={{background: 'rgba(255, 0, 0, 0.303)', display: 'flex', justifyContent: 'cnter', alignItems: 'center'}}>
-      {/* <div className="main--video">
+    <div className="main">
+      {/* <div className="main" style={{background: 'rgba(255, 0, 0, 0.303)', display: 'flex', justifyContent: 'cnter', alignItems: 'center'}}> */}
+      <div className="main--video">
         <div className="video--container">
-        <iframe src="https://vk.com/video_ext.php?oid=-227359578&id=456239019&hd=2&autoplay=1" width="265" height="540" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
+          <iframe
+            src="https://vk.com/video_ext.php?oid=-227359578&id=456239019&hd=2&autoplay=1"
+            width="265"
+            height="540"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
         </div>
       </div>
       <div className="main--info">
@@ -48,11 +59,18 @@ export default function Main() {
         </p>
 
         <div className="main-link--container">
-          <a href="#" target="_blank"><span>К выбору</span></a>
+          {/* <a href="/items?filter=Новинки"><span>К выбору</span></a> */}
+          {category && category.link ? (
+            <NavLink to={category.link || "#"}>
+              <span>К выбору</span>
+            </NavLink>
+          ) : (
+            <span className="disabled-link">К выбору</span>
+          )}
         </div>
-      </div> */}
+      </div>
 
-      <h1 style={{fontSize: "40px", textTransform: 'uppercase', color: 'white'}}>ведутся технические работы</h1>
+      {/* <h1 style={{fontSize: "40px", textTransform: 'uppercase', color: 'white'}}>ведутся технические работы</h1> */}
     </div>
   );
 }

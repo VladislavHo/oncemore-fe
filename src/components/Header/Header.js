@@ -1,11 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
 import Search from "../Search/Search";
 import "./Header.css";
-import liked from "../../images/icon _heart.svg";
-import cart from "../../images/icon _shopping cart.svg";
+
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
-import { useContext, useEffect, useState } from "react";
-import { CartContext } from "../../contexts/CartContext";
+import { useContext, useState } from "react";
+
 import { UserContext } from "../../contexts/UserContext";
 import UserAvatar from "../UserAvatar/UserAvatar";
 import icon from "../../images/grid-2.svg"
@@ -13,9 +12,9 @@ import logo from "../../images/oncemore_logo.svg";
 
 export default function Header(props) {
   const currentPath = useLocation().pathname;
-  const {cartItemsNum} = props;
+
   const userData = useContext(UserContext).user;
-  const points = userData.points;
+
 
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
@@ -85,12 +84,7 @@ export default function Header(props) {
                   </div>
                 </button>
               </div>
-              <NavLink className="header__link" to="/points">
-                <p className="header__link-title">Баллы</p>
-                <p className="header__subtitle">
-                  {points ? points : 0}₽
-                </p>
-              </NavLink>
+
             </div>
           ) : (
             <div className="header__links">
@@ -101,22 +95,8 @@ export default function Header(props) {
               </button>
             </div>            
           )}
-          <NavLink className="header__link" to="/liked">
-            <img className="header__icon"
-              src={liked}
-              alt="liked"
-            />
-          </NavLink>
-          <NavLink className="header__link" to="/cart">
-            <img className="header__icon"
-              src={cart}
-              alt="cart"
-            />
-            {
-              cartItemsNum == 0 ? "" :
-              <div className="header__cart-num">{cartItemsNum}</div>
-            }
-          </NavLink>
+
+
         </nav>
       </div>
       {
