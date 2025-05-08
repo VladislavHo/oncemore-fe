@@ -96,6 +96,10 @@ export default function App() {
   const [cartItemsNum, setCartItemsNum] = useState(0);
   //#endregion
 
+
+
+  
+
   //#region Методы для модальных окон
   const handleModalClose = useCallback((modalId) => {
     setModalsActivity((prev) => ({ ...prev, [modalId]: false }));

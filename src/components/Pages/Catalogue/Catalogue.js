@@ -233,12 +233,13 @@ export default function Catalogue(props) {
             </NavLink>
           </div>
           <div className="catalogue__videos">
+            
             <AliceCarousel
               items={videos}
               {...carouselSettings} // Используем общие настройки
               ref={videoCarousel}
             />
-            {/* <button
+            <button
               className="catalogue__carousel-btn catalogue__carousel-btn_prev"
               type="button"
               onClick={(e) => slidePrev(videoCarousel, e)}
@@ -247,7 +248,7 @@ export default function Catalogue(props) {
               className="catalogue__carousel-btn catalogue__carousel-btn_next"
               type="button"
               onClick={(e) => slideNext(videoCarousel, e)}
-            /> */}
+            />
           </div>
         </section>
       )}

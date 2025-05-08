@@ -68,7 +68,7 @@ export default function Admin(props) {
           </button>
         </div>
       }
-      {
+      {/* {
         user.privilege < 1 ? "" :
         <div className="admin__orders">
           <h2 className="admin__title">Заказы</h2>
@@ -86,7 +86,7 @@ export default function Admin(props) {
             }
           </div>
         </div>
-      }
+      } */}
     </main>
   );
 }

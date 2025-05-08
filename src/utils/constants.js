@@ -9,10 +9,6 @@ const userLinks = [
     link: "/me",
   },
   {
-    name: "Заказы",
-    link: "/orders",
-  },
-  {
     name: "Админка",
     link: "/admin",
   },
