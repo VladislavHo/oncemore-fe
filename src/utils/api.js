@@ -1,4 +1,4 @@
-import defaultVid from "../temp/video.mp4";
+// import defaultVid from "../temp/video.mp4";
 import {baseUrl} from "./constants";
 
 class Api {
