@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.1d5cf310.css",
-    "main.js": "/static/js/main.c4753ec8.js",
+    "main.js": "/static/js/main.338499a4.js",
     "static/css/801.16ee9341.chunk.css": "/static/css/801.16ee9341.chunk.css",
     "static/js/801.ef369525.chunk.js": "/static/js/801.ef369525.chunk.js",
     "static/media/Comfortaa-VariableFont_wght.ttf": "/static/media/Comfortaa-VariableFont_wght.7b8c952927af2b0deacd.ttf",
@@ -38,12 +38,12 @@
     "static/media/Plus.svg": "/static/media/Plus.78db75b6305df97c4182.svg",
     "static/media/Minus.svg": "/static/media/Minus.f6cd22ad776bd0aaed53.svg",
     "main.1d5cf310.css.map": "/static/css/main.1d5cf310.css.map",
-    "main.c4753ec8.js.map": "/static/js/main.c4753ec8.js.map",
+    "main.338499a4.js.map": "/static/js/main.338499a4.js.map",
     "801.16ee9341.chunk.css.map": "/static/css/801.16ee9341.chunk.css.map",
     "801.ef369525.chunk.js.map": "/static/js/801.ef369525.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1d5cf310.css",
-    "static/js/main.c4753ec8.js"
+    "static/js/main.338499a4.js"
   ]
 }

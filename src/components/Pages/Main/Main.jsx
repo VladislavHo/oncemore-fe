@@ -1,22 +1,39 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Main.css";
+// import video from "../../../temp/OnceMore.mp4";
+import videoSrc from "./OnceMore.mp4";
 export default function Main({ categories }) {
   const category = categories[0];
 
+
+  console.log(videoSrc);
   return (
     <div className="main">
       {/* <div className="main" style={{background: 'rgba(255, 0, 0, 0.303)', display: 'flex', justifyContent: 'cnter', alignItems: 'center'}}> */}
       <div className="main--video">
         <div className="video--container">
-          <iframe
+      <video
+        src={videoSrc}
+        width="263"
+          height={Math.round((263 * 1920) / 1080)} 
+         loop
+        muted     // Помогает с autoplay
+        frameBorder="0"  // camelCase
+        allowFullScreen  // camelCase
+        autoPlay
+        style={{ borderRadius: '15px'}}  // Видно область плеера
+      >
+        Ваш браузер не поддерживает HTML5 видео.
+      </video>
+          {/* <iframe
             src="https://vk.com/video_ext.php?oid=-227359578&id=456239019&hd=2&autoplay=1"
             width="265"
             height="540"
             allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
             frameborder="0"
             allowfullscreen
-          ></iframe>
+          ></iframe> */}
         </div>
       </div>
       <div className="main--info">
